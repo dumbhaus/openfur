@@ -2,4 +2,4 @@
 
 https://dumbhaus.github.com/openfur
 
-This report is licensed under [CC-BY-4.0](https://github.com/dumbhaus/openfur/license)
+This report is licensed under [CC-BY-4.0](https://github.com/dumbhaus/openfur/blob/master/license)
