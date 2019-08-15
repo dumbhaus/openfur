@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenFur Report 2018</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="A transparency report on sexuality in the furry fandom">
+  <meta name="author" content="Dumbhaus">
+  <meta name="keywords" content="furry,furries,furs,anthro,antropomorphic,report,transparent,2018">
+  <link rel="stylesheet" href="assets/app.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" integrity="sha256-vK3UTo/8wHbaUn+dTQD0X6dzidqc5l7gczvH+Bnowwk=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
+</head>
+<body>
+  <section class="hero is-light">
+    <div class="hero-body">
+      <div class="container">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <figure class="image is-64x64">
+                  <img src="assets/openfur-logo.png"/>
+              </figure>
+            </div>
+            <div class="level-item">
+              <span class="title">OpenFur</span>
+            </div>
+            <div class="level-item">
+              <span class="subtitle">Transparency Through Data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <div class="section">
+      <h3 class="is-size-4">Introduction</h3>
+      <p>
+        Welcome to the OpenFur 2018 transparency report. This report was created in order to help
+        educate a discerning public about who furries are, what their culture consists of,
+        and how sexuality is treated within the community. This report provides data about posts
+        taken from Fur Affinity, the largest furry community on the internet, in order to better
+        understand the vast differences in the community. This version of the report utilizes data
+        from the year of 2018 and consists of 401,784 data points which is approximately 10% of the
+        4,017,836 posts from that year.
+      </p>
+      </hr>
+    </div>
+    
+    <div id="loading" class="section">
+      <h1 class="title has-text-centered">Loading...</h1>
+    </div>
+    
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Reducing Bias</h3>
+          <p>
+            In order to gather enough data for this report while also not occupying too much
+            time during the data gathering phase, it was decided that a select number of posts
+            would be utilized for this report. This report utilizes a 10% sample rate on the
+            estimated 4,017,836 total posts on Fur Affinity. This sample rate was choosen in
+            order to get the most accurate picture of the Fur Affinity community. These posts
+            were randomly selected from a set of all the posts from January 1st, 2018 to December
+            31st, 2018. In order to reduce the amount of bias in post selection, a
+            cryptographically-secure pseudo random number generator was utilized to select posts
+            for study. The full code utilized in this report is avalible on Github as open source
+            software and the analysis of the data gathered is also avalible as a JSON file download.
+            It is our intent to ensure that this report is as fair to the furry community as possible.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Content Ratings</h3>
+          <p>
+            The furry community creates a lot of content. Most of this content is harmless fun,
+            however some of this content may be inappropriate for some audiences. This content
+            may vary from suggestive material to graphic nudity. FurAffinty offers three different
+            ratings for content: general, mature, and adult. General is typically content which is
+            meant for the consumption of all ages. Mature contains content that may be inappropriate
+            for a minor to view. Adult contains content which is sexually explicit and is only meant
+            for adult consumption. More information about these ratings can be found on FurAffnity's
+            <a href="https://www.Fur Affinity.net/aup">Acceptable Upload Policy</a> page.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns is-desktop">
+        <div class="column">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <td>Rating</td>
+                <td>Total</td>
+                <td>Percentage</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>General</td>
+                <td id="general-count"></td>
+                <td id="general-percentage"></td>
+              </tr>
+              <tr>
+                <td>Mature</td>
+                <td id="mature-count"></td>
+                <td id="mature-percentage"></td>
+              </tr>
+              <tr>
+                <td>Adult</td>
+                <td id="adult-count"></td>
+                <td id="adult-percentage"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td id="total-count"></td>
+                <td>100%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="column">
+          <canvas id="content-ratings"></canvas>
+        </div>
+      </div>
+    </div>
+      
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Identifying Sexualized Content</h3>
+          <p>
+            Content ratings, however, do not tell the full story of the variety of content avalible
+            on Fur Affinity. Often suggestive content or content which might have a sexual background
+            can be found mascarading itself as General content. Contrastly, content which is classified
+            as Mature does not necessarily mean a sexual nature. For the purposes of this report, a
+            different set of classifications has been created in order to identify this content in the
+            General and Mature content ratings. These identifiers have been gathered from the top
+            tags and themes of the General and Mature content ratings and were selected for their known
+            sexualized backgrounds. While not all these identifiers were solely utilized for sexual
+            content, more of the content under these tags were of sexual nature than that of other 
+            popular identifiers.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns"><div class="column"><h5 class="is-size-5">Tags</h5></div></div>
+      
+      <div class="columns is-centered is-desktop">
+        <div class="column is-10-desktop">
+          <div class="table-container">
+            <table class="table is-bordered is-fullwidth">
+              <tbody>
+                <tr>
+                  <td>abs</td>
+                  <td>ass</td>
+                  <td>balls</td>
+                  <td>bbw</td>
+                  <td>bdsm</td>
+                  <td>belly</td>
+                  <td>big</td>
+                  <td>blood</td>
+                  <td>bondage</td>
+                  <td>boobs</td>
+                </tr>
+                <tr>
+                  <td>booty</td>
+                  <td>breasts</td>
+                  <td>buff</td>
+                  <td>bulge</td>
+                  <td>busty</td>
+                  <td>butt</td>
+                  <td>chubby</td>
+                  <td>cock</td>
+                  <td>diaper</td>
+                  <td>dick</td>
+                </tr>
+                <tr>
+                  <td>expansion</td>
+                  <td>fat</td>
+                  <td>feet</td>
+                  <td>femboy</td>
+                  <td>foot</td>
+                  <td>gain</td>
+                  <td>gore</td>
+                  <td>growth</td>
+                  <td>gut</td>
+                  <td>herm</td>
+                </tr>
+                <tr>
+                  <td>hips</td>
+                  <td>hot</td>
+                  <td>huge</td>
+                  <td>hyper</td>
+                  <td>inflation</td>
+                  <td>latex</td>
+                  <td>lingerie</td>
+                  <td>macro</td>
+                  <td>massive</td>
+                  <td>messy</td>
+                </tr>
+                <tr>
+                  <td>micro</td>
+                  <td>muscle</td>
+                  <td>muscles</td>
+                  <td>muscular</td>
+                  <td>naked</td>
+                  <td>nipple</td>
+                  <td>nipples</td>
+                  <td>nsfw</td>
+                  <td>nude</td>
+                  <td>nudity</td>
+                </tr>
+                <tr>
+                  <td>obese</td>
+                  <td>panties</td>
+                  <td>pecs</td>
+                  <td>penis</td>
+                  <td>pussy</td>
+                  <td>rubber</td>
+                  <td>sexy</td>
+                  <td>ssbbw</td>
+                  <td>suit</td>
+                  <td>tf</td>
+                  </tr>
+                <tr>
+                  <td>thicc</td>
+                  <td>thick</td>
+                  <td>thighs</td>
+                  <td>tits</td>
+                  <td>tongue</td>
+                  <td>transformation</td>
+                  <td>underwear</td>
+                  <td>vagina</td>
+                  <td>vore</td>
+                  <td>weight</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns"><div class="column"><h5 class="is-size-5">Themes</h5></div></div>
+      
+      <div class="columns is-centered is-desktop">
+        <div class="column is-10-desktop">
+          <div class="table-container">
+            <table class="table is-bordered is-fullwidth">
+              <tbody>
+                <tr>
+                  <td>fat furs</td>
+                  <td>vore</td>
+                  <td>transformation</td>
+                  <td>muscle</td>
+                  <td>bondage</td>
+                  <td>fetish other</td>
+                  <td>hyper</td>
+                </tr>
+                <tr>
+                  <td>macro / micro</td>
+                  <td>baby fur</td>
+                  <td>inflation</td>
+                  <td>gore / macabre art</td>
+                  <td>pregnancy</td>
+                  <td>tf / tg</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns">
+        <div class="column">
+          <p>
+            With these identifiers established, we can now get an approximate percentage for the
+            content in the General and Mature ratings which may contain a sexual background.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns is-desktop">
+        <div class="column">
+          <h5 class="is-size-6 has-text-centered">General</h5>
+          <canvas id="general-nsfw"></canvas>
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <td>Type</td>
+                <td>Total</td>
+                <td>Percentage</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Regular Content</td>
+                <td id="general-regular-total"></td>
+                <td id="general-regular-percentage"></td>
+              </tr>
+              <tr>
+                <td>Sexual Content</td>
+                <td id="general-sexual-total"></td>
+                <td id="general-sexual-percentage"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td id="general-total"></td>
+                <td>100%</td>
+            </tfoot>
+          </table>
+        </div>
+        <div class="column">
+          <h5 class="is-size-6 has-text-centered">Mature</h5>
+          <canvas id="mature-nsfw"></canvas>
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <td>Type</td>
+                <td>Total</td>
+                <td>Percentage</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Regular Content</td>
+                <td id="mature-regular-total"></td>
+                <td id="mature-regular-percentage"></td>
+              </tr>
+              <tr>
+                <td>Sexual Content</td>
+                <td id="mature-sexual-total"></td>
+                <td id="mature-sexual-percentage"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td id="mature-total"></td>
+                <td>100%</td>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      
+      <div class="columns">
+        <div class="column">
+          <p>
+            We can now also create an estimation of the total ratio of sexual to regular content.
+            This data shows that while sexual content is not negligable in the furry community,
+            it is also not a majority of the content offered. Sexual content appears
+            to make up about 43% of the total content avalible on Fur Affinity.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns is-centered">
+        <div class="column is-6-desktop">
+          <canvas id="total-nsfw"></canvas>
+        </div>
+      </div>
+      
+      <div class="columns is-centered is-desktop">
+        <div class="column is-10-desktop">
+          <div class="table-container">
+            <table class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <td>Type</td>
+                  <td>Total</td>
+                  <td>Percentage</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Regular Content</td>
+                  <td id="total-regular-total"></td>
+                  <td id="total-regular-percentage"></td>
+                </tr>
+                <tr>
+                  <td>[General] Sexual Content</td>
+                  <td id="total-general-sexual-total"></td>
+                  <td id="total-general-sexual-percentage"></td>
+                </tr>
+                <tr>
+                  <td>[Mature] Sexual Content</td>
+                  <td id="total-mature-sexual-total"></td>
+                  <td id="total-mature-sexual-percentage"></td>
+                </tr>
+                <tr>
+                  <td>[Adult] Sexual Content</td>
+                  <td id="total-adult-sexual-total"></td>
+                  <td id="total-adult-sexual-percentage"></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total</td>
+                  <td id="total-content"></td>
+                  <td>100%</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Types of Sexualized Content</h3>
+          <p>
+            Sexual content in the furry community ranges from soft-core content which is primarily
+            suggestive and contains little to no nudity to hard-core content which contains graphic
+            sexual acts. In this report, we attempted to classify certain types of this content and
+            measure it's prevalence in the community. These content types were choosen for their 
+            known sexual connections in the community. Is it important to note that each of these
+            content types are their own independent group of the furry community with their own subgroups.
+            Some groups may sexualize the content type more than others. This report makes no judgement on
+            how sexual these content types are, and presents these content types as a whole cohesive group
+            for easier analysis.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns is-centered is-desktop">
+        <div class="column is-10">
+          <div class="table-container">
+            <table class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <td>Type</td>
+                  <td>Description</td>
+                  <td>Themes</td>
+                  <td>Tags</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Weight Gain</td>
+                  <td>Characters depicted with a large amount of body weight</td>
+                  <td>fat furs</td>
+                  <td>fat, belly, chubby, bbw, gut, obese, ssbbw, weight</td>
+                </tr>
+                <tr>
+                  <td>Vore</td>
+                  <td>Characters swallowing other characters whole</td>
+                  <td>vore</td>
+                  <td>vore</td>
+                </tr>
+                <tr>
+                  <td>Transformation</td>
+                  <td>Characters turning into different characters/occupying different bodies</td>
+                  <td>transformation, tf / tg</td>
+                  <td>transformation, tf</td>
+                </tr>
+                <tr>
+                  <td>Muscles</td>
+                  <td>Characters depicted with a lot of muscle growth</td>
+                  <td>muscle</td>
+                  <td>muscle, abs, buff, mucles, muscular, pecs</td>
+                </tr>
+                <tr>
+                  <td>Baby Furs</td>
+                  <td>Characters depicted in child-like situations typically with diapers on</td>
+                  <td>baby furs</td>
+                  <td>diaper, messy</td>
+                </tr>
+                <tr>
+                  <td>Feet</td>
+                  <td>Characters' feet typically placed as the center of attention</td>
+                  <td></td>
+                  <td>feet, foot</td>
+                </tr>
+                <tr>
+                  <td>Macro/Micro</td>
+                  <td>Characters depicted as being of abnormally large or small scale</td>
+                  <td>macro / micro</td>
+                  <td>macro, micro</td>
+                </tr>
+                <tr>
+                  <td>Inflation</td>
+                  <td>Characters growing in size typically by the use of an air pump</td>
+                  <td>inflation</td>
+                  <td>inflation, expansion</td>
+                </tr>
+                <tr>
+                  <td>Bondage</td>
+                  <td>Characters depicted in restrained situations</td>
+                  <td>bondage</td>
+                  <td>latex, rubber, rondage, bdsm, suit</td>
+                </tr>
+                <tr>
+                  <td>Gore</td>
+                  <td>The depiction of an excessive amount of blood/bodily organs</td>
+                  <td>gore / macabre art</td>
+                  <td>blood, gore</td>
+                </tr>
+                <tr>
+                  <td>Hyper</td>
+                  <td>Characters depicted with overly large genitals</td>
+                  <td></td>
+                  <td>hyper</td>
+                </tr>
+                <tr>
+                  <td>Water Sports</td>
+                  <td>Characters depicted urinating on themselves/others</td>
+                  <td>water sports</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Feral</td>
+                  <td>Characters depicted as more animal-like than anthropomorphic</td>
+                  <td></td>
+                  <td>feral</td>
+                </tr>
+                <tr>
+                  <td>Pregancy</td>
+                  <td>Characters depicted during a pregancy or giving birth</td>
+                  <td>pregnancy</td>
+                  <td>pregnancy</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns">
+        <div class="column">
+          <p>
+            With these categories and identifiers established, we can now create an estimate for
+            the relative prevalence of each category in relation to one another.
+          </p>
+        </div>
+      </div>
+      
+      <div class="columns is-desktop">
+        <div class="column is-8-desktop">
+          <canvas id="nsfw-types"></canvas>
+        </div>
+        <div class="column is-4-desktop">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <td>Category</td>
+                <td>Total</td>
+              </tr>
+            </thead>
+            <tbody id="nsfw-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Closing Remarks</h3>
+          <p>
+            This report was created to find tangable data about sexuality throughout
+            the furry community. This report goes to show that sexuality is not a
+            majority of the content avalible on Fur Affinity, the largest furry
+            community on the internet. Even when attention is given to the sexual
+            content avalible, much of the content is diversified among a large range
+            of different sexual interests. This goes to show that the furry community
+            is quite diverse in their feelings towards sexual content and their
+            particular taste in sexual content.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section requires-data">
+      <div class="columns">
+        <div class="column">
+          <h3 class="is-size-4">Downloads</h3>
+        </div>
+      </div>
+      
+      <div class="columns is-desktop">
+        <div class="column has-text-centered">
+          <a class="button" href="https://github.com/dumbhaus/openfur-data-utils">
+            <span class="icon is-small"><i class="fab fa-github"></i></span>
+            <span>Checkout the code on Github</span>
+          </a>
+        </div>
+        <div class="column has-text-centered">
+          <a class="button" href="/assets/report.json" download="report.json">
+            <span class="icon is-small"><i class="fas fa-file"></i></span>
+            <span>Download the report file (json)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          Licensed under <a href="https://github.com/dumbhaus/openfur/license">CC-BY-4.0</a>.
+          <br>
+          Learn more at <a href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a>
+          <br><br>
+          Disclaimer: We are not affiliated, associated, authorized, endorsed by, or in any way officially
+          connected with Fur Affinty or IMVU. This report utilizes data that was gathered and analyzed
+          externally.
+        </p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.5.0"></script>
+  <script src="assets/main.js"></script>
+</body>
+</html>
