@@ -1,9 +1,10 @@
 'use strict';
 
-async function main() {
-  let response = await fetch('assets/report.json');
-  let report = await response.json();
-  
+fetch('assets/report.json').then((response) => {
+  response.json().then(main)
+});
+
+function main(report) {
   Chart.defaults.global.plugins = {
     datalabels: {
       formatter: (value, ctx) => {
@@ -136,5 +137,3 @@ async function main() {
     section.classList.toggle('requires-data');
   });
 }
-
-main();
