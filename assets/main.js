@@ -1,7 +1,7 @@
 'use strict';
 
 fetch('assets/report.json').then((response) => {
-  response.json().then(main)
+  response.json().then(main);
 });
 
 function main(report) {
